@@ -7,13 +7,10 @@ enough for what I need, including compiling, but opening several web
 pages in Firefox quickly ends up using more memory than it has.
 
 The Ansible playbook currently configures just swaaping on zram.
-Fedora already uses a similar configuration since Fedora 33. After
-lots of experiments, I decided to set the size of the zram swap to
-150% of the avilable RAM, similar to what Google uses in ChromeOS and
-pehaps Android (not sure if this is still the case, but 150%
-practically doubles the amount of RAM in the sysem if zram ca acieve a
-compression ratio around 3:1). This is workload-dependent, I see
-compression ratios of around 3.7:1 or 3.2:1 in most cases.
+Fedora already uses a similar configuration since Fedora 33. I saw a
+compression ratio of 2.2:1 using lz4 and 2.33:1 using lzo, so setting
+the size of the zram disk to 100% of the system RAM should be enough
+to prevent it from using more than 50% of the system memory.
 
 My playbook only supports Debian Buster; I plan to add support for
 Bullseye after it's released. Due to a limitation in the *zram-tools*
@@ -26,9 +23,9 @@ also lets you pick the compression algorithm).
 
 ## How to use
 
-If you aren't already unsing Ansible install it with `sudo apt install
-ansible`. Now edit its inventory file to contain something like the
-following, using `sudoedit /etc/ansible/hosts`:
+First install Ansible and Git via `sudo apt install ansible git`. Now
+use `sudoedit /etc/ansible/hosts` to add something like the following
+to your Ansible inventory file:
 
 ```yaml
 all:
@@ -41,7 +38,7 @@ all:
         localhost:
 ```
 
-You can now clone this repo and run the playbook:
+Now clone this repo and run the playbook:
 
 ```
 cd /tmp
@@ -50,5 +47,5 @@ cd debian-desktop
 ansible-playbook -K local.yml
 ```
 
-That's all, you can now reboot the system.
+The changes will take effect the next time you boot the system.
 
