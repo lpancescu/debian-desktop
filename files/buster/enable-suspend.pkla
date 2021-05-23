@@ -1,0 +1,6 @@
+[Enable suspend on idle]
+Identity=unix-user:*
+Action=org.freedesktop.login1.suspend
+ResultAny=auth_admin_keep
+ResultInactive=yes
+ResultActive=yes

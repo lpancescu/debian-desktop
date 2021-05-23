@@ -34,3 +34,20 @@
         mode: 0644
         regexp: '^([^#]\S+\s+\S+\s+swap\s+[^\n]*)$'
         replace: '#\1'
+
+- name: setup Xfce
+  hosts: xfce
+  become: yes
+  tasks:
+  - name: enable automatic suspend
+    copy:
+      src: files/{{ ansible_distribution_release }}/enable-suspend.pkla
+      dest: /etc/polkit-1/localauthority/50-local.d/enable-suspend.pkla
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: install additional packages for Xfce
+    apt:
+      name: compton
+      state: present
