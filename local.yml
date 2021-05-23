@@ -1,5 +1,19 @@
 ---
-- name: Configure zramswap
+- name: setup sound
+  hosts: all
+  become: yes
+  tasks:
+    - name: enable PulseAudio mixer
+      lineinfile:
+        insertafter: '^;\s*flat-volumes\s*='
+        regexp: '^\s*flat-volumes\s*='
+        line: 'flat-volumes = no'
+        path: /etc/pulse/daemon.conf
+        owner: root
+        group: root
+        mode: 0644
+
+- name: configure zramswap
   hosts: low_memory
   become: yes
   tasks:
