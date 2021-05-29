@@ -1,5 +1,5 @@
 ---
-- name: setup sound
+- name: generic
   hosts: all
   become: yes
   tasks:
@@ -13,7 +13,7 @@
         group: root
         mode: 0644
 
-- name: configure zramswap
+- name: zramswap
   hosts: low_memory
   become: yes
   tasks:
@@ -49,7 +49,7 @@
         regexp: '^([^#]\S+\s+\S+\s+swap\s+[^\n]*)$'
         replace: '#\1'
 
-- name: setup Xfce
+- name: Xfce
   hosts: xfce
   become: yes
   tasks:
