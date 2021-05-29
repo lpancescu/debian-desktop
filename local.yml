@@ -13,6 +13,15 @@
         group: root
         mode: 0644
 
+    - name: install additional packages
+      apt:
+        name:
+          - needrestart
+          - thunderbird
+          - transmission
+          - weechat
+        state: present
+
 - name: zramswap
   hosts: low_memory
   become: yes
@@ -61,7 +70,15 @@
         group: root
         mode: 0644
 
-  - name: install additional packages for Xfce
-    apt:
-      name: compton
-      state: present
+
+- name: Mac Mini
+  hosts: macmini31
+  become: yes
+  tasks:
+    - name: install firmware packages
+      apt:
+        name:
+          - firmware-b43-installer
+          - firmware-realtek
+          - intel-microcode
+        state: present
