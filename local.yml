@@ -3,6 +3,18 @@
   hosts: all
   become: yes
   tasks:
+    - name: install Intel microcode
+      apt:
+        name: intel-microcode
+        state: present
+      when: '"GenuineIntel" in ansible_processor'
+
+    - name: install Broadcom BCM4321 firmware
+      apt:
+        name: firmware-b43-installer
+        state: present
+      when: ansible_product_name == "Macmini3,1"
+
     - name: enable PulseAudio mixer
       lineinfile:
         insertafter: '^;\s*flat-volumes\s*='
@@ -69,16 +81,3 @@
         owner: root
         group: root
         mode: 0644
-
-
-- name: Mac Mini
-  hosts: macmini31
-  become: yes
-  tasks:
-    - name: install firmware packages
-      apt:
-        name:
-          - firmware-b43-installer
-          - firmware-realtek
-          - intel-microcode
-        state: present
