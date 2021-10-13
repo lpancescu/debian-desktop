@@ -12,14 +12,13 @@ compression ratio of 2.2:1 using lz4 and 2.33:1 using lzo, so setting
 the size of the zram disk to 100% of the system RAM should be enough
 to prevent it from using more than 50% of the system memory.
 
-My playbook only supports Debian Buster; I plan to add support for
-Bullseye after it's released. Due to a limitation in the *zram-tools*
-package in Buster, you can't choose the algorithm, and you have to set
-the *CORES* variable explicitly to 1, to prevent *zram-tools* from
-creating as many zram disks as cores, each using a number of htreads
-equal to the number of cores, which brings the system to its knees
-(this seems to be fixed in Bullseye, whose version of *zram-tools*
-also lets you pick the compression algorithm).
+My playbook supports Debian Buster and Bullseye. Due to a limitation
+in the *zram-tools* package in Buster, you can't choose the algorithm,
+and you have to set the *CORES* variable explicitly to 1, to prevent
+*zram-tools* from creating as many zram disks as cores, each using a
+number of htreads equal to the number of cores, which brings the
+system to its knees (this was fixed in Bullseye, whose version of
+*zram-tools* also lets you pick the compression algorithm).
 
 ## How to use
 
