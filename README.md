@@ -6,11 +6,12 @@ running on low memory machines like my old Mac Mini "late 2009" with
 enough for what I need, including compiling, but opening several web
 pages in Firefox quickly ends up using more memory than it has.
 
-The Ansible playbook currently configures just swaping on zram.
-Fedora already uses a similar configuration since Fedora 33. I saw a
-compression ratio of 2.2:1 using lz4 and 2.33:1 using lzo, so setting
-the size of the zram disk to 100% of the system RAM should be enough
-to prevent it from using more than 50% of the system memory.
+The Ansible playbook currently configures swaping on zram if the system
+has less than 16GiB of RAM.  Fedora already uses a similar configuration
+since Fedora 33. I saw a compression ratio of 2.2:1 using lz4 and 2.33:1
+using lzo, so setting the size of the zram disk to 100% of the system
+RAM should be enough to prevent it from using more than 50% of the
+system memory.
 
 My playbook supports Debian Buster and Bullseye. Due to a limitation
 in the *zram-tools* package in Buster, you can't choose the algorithm,
@@ -31,10 +32,8 @@ all:
   hosts:
     localhost:
       ansible_connection: local
-  children:
-    low_memory:
-      hosts:
-        localhost:
+  vars:
+    zram_use_threshold_mb: 16384
 ```
 
 Now clone this repo and run the playbook:

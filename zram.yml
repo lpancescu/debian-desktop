@@ -1,0 +1,32 @@
+---
+- name: install zram-tools and earlyoom
+  apt:
+    name:
+      - zram-tools
+      - earlyoom
+    state: present
+
+- name: write zram-tools defaults
+  copy:
+    src: files/{{ ansible_distribution_release }}/zramswap
+    dest: /etc/default/zramswap
+    owner: root
+    group: root
+    mode: 0644
+
+- name: write sysctl configuration
+  copy:
+    src: files/{{ ansible_distribution_release }}/sysctl.conf
+    dest: /etc/sysctl.d/local.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: disable swap entries in /etc/fstab
+  replace:
+    path: /etc/fstab
+    owner: root
+    group: root
+    mode: 0644
+    regexp: '^([^#]\S+\s+\S+\s+swap\s+[^\n]*)$'
+    replace: '#\1'

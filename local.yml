@@ -48,39 +48,6 @@
         mode: 0644
       when: xfwm4_st.stat.isreg is defined and xfwm4_st.stat.isreg == True
 
-
-- name: zramswap
-  hosts: low_memory
-  become: yes
-  tasks:
-    - name: install zram-tools and earlyoom
-      apt:
-        name:
-          - zram-tools
-          - earlyoom
-        state: present
-
-    - name: write zram-tools defaults
-      copy:
-        src: files/{{ ansible_distribution_release }}/zramswap
-        dest: /etc/default/zramswap
-        owner: root
-        group: root
-        mode: 0644
-
-    - name: write sysctl configuration
-      copy:
-        src: files/{{ ansible_distribution_release }}/sysctl.conf
-        dest: /etc/sysctl.d/local.conf
-        owner: root
-        group: root
-        mode: 0644
-
-    - name: disable swap entries in /etc/fstab
-      replace:
-        path: /etc/fstab
-        owner: root
-        group: root
-        mode: 0644
-        regexp: '^([^#]\S+\s+\S+\s+swap\s+[^\n]*)$'
-        replace: '#\1'
+    - name: setup zram
+      import_tasks: zram.yml
+      when: zram_use_threshold_mb is defined and ansible_memory_mb.real.total < zram_use_threshold_mb
