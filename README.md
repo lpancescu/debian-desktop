@@ -35,9 +35,6 @@ all:
     low_memory:
       hosts:
         localhost:
-    xfce:
-      hosts:
-        localhost:
 ```
 
 Now clone this repo and run the playbook:
