@@ -1,0 +1,7 @@
+all:
+  hosts:
+    tulip:
+      ansible_connection: local
+  vars:
+    zram_use_threshold_mb: 16384
+
