@@ -31,10 +31,14 @@ cd debian-desktop
 ansible-playbook -K local.yml
 ```
 
-You can change the _zram_use_threshold_mb_ to the amount of memory you
-consider enough to not need zram. The default is 16384, so zrm is not
-configured if you have more than 16GB RAM. You can also delete this line
-altogether if you don't want zram.
+You can change the _zram_use_threshold_mb_  variable in the _hosts_ file
+to the amount of memory you consider enough to not need zram. The
+default is 16384, so zrm is not configured if you have more than 16GB
+RAM. You can also delete this line altogether if you don't want zram.
+
+You can also adapt the _install_pkgs_ variable to list any additional
+packages you would like to install (or remove the variable altogether if
+you don't need to install anything).
 
 ```yaml
 all:
@@ -43,6 +47,9 @@ all:
       ansible_connection: local
   vars:
     zram_use_threshold_mb: 16384
+    install_pkgs:
+      - needrestart
+      - vim
 ```
 
 You can now run the playbook:

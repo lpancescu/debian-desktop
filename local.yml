@@ -27,12 +27,9 @@
 
     - name: install additional packages
       apt:
-        name:
-          - needrestart
-          - thunderbird
-          - transmission
-          - weechat
+        name: "{{ install_pkgs }}"
         state: present
+      when: install_pkgs is defined
 
     - name: detect if Xfce is installed
       stat:
